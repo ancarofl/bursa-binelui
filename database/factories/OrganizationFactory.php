@@ -53,24 +53,24 @@ class OrganizationFactory extends Factory
 
     public function pending(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'status' => OrganizationStatus::pending,
         ]);
     }
 
     public function approved(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'status' => OrganizationStatus::approved,
-            'status_updated_at' => fake()->dateTime(),
+            'status_updated_at' => fake()->dateTime(null, config('app.timezone')),
         ]);
     }
 
     public function rejected(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'status' => OrganizationStatus::rejected,
-            'status_updated_at' => fake()->dateTime(),
+            'status_updated_at' => fake()->dateTime(null, config('app.timezone')),
         ]);
     }
 
@@ -120,7 +120,7 @@ class OrganizationFactory extends Factory
                 ->hasAttached(
                     Volunteer::factory()
                         ->count(1),
-                    fn () => [
+                    fn() => [
                         'status' => fake()->randomElement(VolunteerStatus::cases()),
                     ]
                 )
@@ -128,7 +128,7 @@ class OrganizationFactory extends Factory
                     Volunteer::factory()
                         ->withUser()
                         ->count(2),
-                    fn () => [
+                    fn() => [
                         'status' => fake()->randomElement(VolunteerStatus::cases()),
                     ]
                 )
@@ -137,7 +137,7 @@ class OrganizationFactory extends Factory
                         ->inRandomOrder()
                         ->take(fake()->numberBetween(1, 3))
                         ->get(),
-                    relationship:'categories'
+                    relationship: 'categories'
                 )
                 ->create();
 

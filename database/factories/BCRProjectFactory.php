@@ -31,13 +31,14 @@ class BCRProjectFactory extends Factory
             ->id;
 
         $title = $this->faker->sentence();
+        $timezone = config('app.timezone');
 
         return [
             'name' => $title,
             'slug' => Str::slug($title),
             'description' => $this->faker->paragraph(),
-            'start_date' => $this->faker->dateTimeBetween('-1 day', 'now'),
-            'end_date' => $this->faker->dateTimeBetween('now', '+1 day'),
+            'start_date' => $this->faker->dateTimeBetween('-1 day', 'now', $timezone),
+            'end_date' => $this->faker->dateTimeBetween('now', '+1 day', $timezone),
             'status' => $this->faker->randomElement(ProjectStatus::values()),
             'external_links' => [
                 [

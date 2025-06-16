@@ -72,7 +72,7 @@ php artisan key:generate
 ```bash
 php artisan migrate:fresh --seed
 ```
-> **Note:** Seeding may fail due to underlying issues with Faker date generation. If that happens, just rerun `php artisan migrate:fresh --seed`. Also, seeding can take a while, so be patient.
+> **Note:** Seeding may take a while, so be patient.
 
 #### 7. Add the following line to your `.env` file to disable CSP locally
 ```bash

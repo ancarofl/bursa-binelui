@@ -21,7 +21,10 @@ class GalaFactory extends Factory
      */
     public function definition(): array
     {
-        $date = CarbonImmutable::createFromInterface(fake()->dateTimeBetween('-1 week', '1 week'));
+        $timezone = config('app.timezone');
+        $date = CarbonImmutable::createFromInterface(
+            fake()->dateTimeBetween('-1 week', '1 week', $timezone)
+        );
 
         return [
             'title' => fake()->text(25),

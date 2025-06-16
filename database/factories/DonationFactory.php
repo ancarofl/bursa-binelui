@@ -25,9 +25,10 @@ class DonationFactory extends Factory
     public function definition(): array
     {
         $amount = fake()->numberBetween(20, 10_000);
-        $start = CarbonImmutable::createFromInterface(
-            fake()->dateTimeBetween('-1 days', 'today')
-        );
+
+        $timezone = config('app.timezone');
+        $startDateTime = fake()->dateTimeBetween('-1 days', 'today', $timezone);
+        $start = CarbonImmutable::createFromInterface($startDateTime);
 
         return [
             'user_id' => User::factory()->donor(),
@@ -41,7 +42,7 @@ class DonationFactory extends Factory
             'email' => fake()->safeEmail(),
             'status' => fake()->randomElement(EuPlatescStatus::values()),
             'charge_date' => $start,
-            'created_at' => fake()->dateTimeBetween('-1 year', 'today'),
+            'created_at' => fake()->dateTimeBetween('-1 year', 'today', $timezone),
             'updated_without_correct_e_pid' => fake()->boolean(),
         ];
     }

@@ -27,8 +27,9 @@ class ProjectFactory extends Factory
     {
         $name = fake()->unique()->sentence();
 
+        $timezone = config('app.timezone');
         $start = CarbonImmutable::createFromInterface(
-            fake()->dateTimeBetween('-1 year', 'today')
+            fake()->dateTimeBetween('-1 year', 'today', $timezone)
         );
 
         return [
@@ -41,8 +42,8 @@ class ProjectFactory extends Factory
             'reason_to_donate' => fake()->text(),
             'beneficiaries' => fake()->text(),
             'start' => $start,
-            'created_at' => fake()->dateTimeBetween('-1 year', 'today'),
-            'updated_at' => fake()->dateTimeBetween('-30 days', 'today'),
+            'created_at' => fake()->dateTimeBetween('-1 year', 'today', $timezone),
+            'updated_at' => fake()->dateTimeBetween('-30 days', 'today', $timezone),
             'end' => $start->addDays(rand(3, 14)),
             'accepting_volunteers' => fake()->boolean(),
             'accepting_comments' => fake()->boolean(),
@@ -51,7 +52,7 @@ class ProjectFactory extends Factory
                 ['url' => 'https://www.youtube.com/watch?v=2Vv-BfVoq4g'],
                 ['url' => 'https://www.youtube.com/watch?v=JGwWNGJdvx8'],
             ], 2),
-            'external_links' => [['title' => $this->faker->name, 'url' => $this->faker->url]],
+            'external_links' => [['title' => fake()->name(), 'url' => fake()->url()]],
         ];
     }
 
@@ -67,7 +68,7 @@ class ProjectFactory extends Factory
             Donation::factory()
                 ->for($project)
                 ->recycle($project->organization)
-                ->for($this->faker->randomElement(User::all()))
+                ->for(fake()->randomElement(User::all()))
                 ->count(fake()->numberBetween(0, 25))
                 ->create();
         });
